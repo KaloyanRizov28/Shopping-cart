@@ -9,7 +9,7 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
           <CardBody className="text-center py-8">
             <p className="text-xl mb-4">Your cart is empty</p>
             <Link to="/shop">
-              <Button 
+              <Button
                 color="primary"
                 className="mt-2"
               >
@@ -29,41 +29,105 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
       <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
       <div className="space-y-4">
         {boughtItems.map(item => (
-          <Card key={item.id} className="bg-content1">
-            <CardBody>
-              <div className="flex items-center gap-4">
-                <div className="bg-content2 rounded-lg p-2">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-16 h-16 object-contain"
-                  />
+          <Card key={item.id} className="bg-content1 hover:shadow-lg transition-shadow">
+            <CardBody className="p-4 md:p-6">
+              {/* Desktop Layout */}
+              <div className="hidden md:grid md:grid-cols-12 gap-6 items-center">
+                <div className="col-span-2">
+                  <div className="bg-content2 rounded-lg p-4 flex items-center justify-center">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-32 h-32 object-contain"
+                    />
+                  </div>
                 </div>
-                <div className="flex-grow">
-                  <h2 className="font-semibold line-clamp-1">{item.title}</h2>
-                  <p className="text-default-500 mt-1">${item.price}</p>
+                <div className="col-span-5">
+                  <h2 className="font-semibold text-lg line-clamp-1">{item.title}</h2>
+                  <p className="text-default-500 text-lg mt-2">${item.price}</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="col-span-3 flex justify-center">
+                  <div className="flex items-center gap-3 bg-content2 rounded-lg px-4 py-2">
+                    <Button
+                      size="md"
+                      variant="light"
+                      isIconOnly
+                      onClick={() => updateQuantity(item.id, item.amount - 1)}
+                      className="text-lg font-bold"
+                    >
+                      −
+                    </Button>
+                    <span className="w-12 text-center text-lg font-medium">{item.amount}</span>
+                    <Button
+                      size="md"
+                      variant="light"
+                      isIconOnly
+                      onClick={() => updateQuantity(item.id, item.amount + 1)}
+                      className="text-lg font-bold"
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+                <div className="col-span-2 flex justify-end">
                   <Button
-                    size="sm"
-                    variant="flat"
-                    onClick={() => updateQuantity(item.id, item.amount - 1)}
-                  >
-                    −
-                  </Button>
-                  <span className="w-8 text-center">{item.amount}</span>
-                  <Button
-                    size="sm"
-                    variant="flat"
-                    onClick={() => updateQuantity(item.id, item.amount + 1)}
-                  >
-                    +
-                  </Button>
-                  <Button
-                    size="sm"
+                    size="md"
                     color="danger"
                     variant="flat"
                     onClick={() => removeItem(item.id)}
+                    className="px-6"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </div>
+
+              {/* Mobile Layout */}
+              <div className="md:hidden space-y-4">
+                <div className="flex flex-col items-center sm:flex-row sm:items-start gap-4">
+                  <div className="bg-content2 rounded-lg p-4">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-40 h-40 object-contain"
+                    />
+                  </div>
+                  <div className="flex-grow text-center sm:text-left">
+                    <h2 className="font-semibold text-lg line-clamp-2">{item.title}</h2>
+                    <p className="text-default-500 text-lg mt-2">${item.price}</p>
+                  </div>
+                </div>
+                
+                <div className="flex flex-col gap-3">
+                  <div className="flex justify-center">
+                    <div className="inline-flex items-center gap-3 bg-content2 rounded-lg px-4 py-2">
+                      <Button
+                        size="md"
+                        variant="light"
+                        isIconOnly
+                        onClick={() => updateQuantity(item.id, item.amount - 1)}
+                        className="text-lg font-bold"
+                      >
+                        −
+                      </Button>
+                      <span className="w-12 text-center text-lg font-medium">{item.amount}</span>
+                      <Button
+                        size="md"
+                        variant="light"
+                        isIconOnly
+                        onClick={() => updateQuantity(item.id, item.amount + 1)}
+                        className="text-lg font-bold"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                  <Button
+                    size="md"
+                    color="danger"
+                    variant="flat"
+                    onClick={() => removeItem(item.id)}
+                    className="w-full"
                   >
                     Remove
                   </Button>
@@ -74,24 +138,25 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
         ))}
       </div>
 
-      <Card className="mt-6 bg-content1">
-        <CardBody>
-          <div className="flex justify-between items-center">
-            <span className="text-xl">Total</span>
-            <span className="text-2xl font-bold">
-              ${total.toFixed(2)}
-            </span>
+      <Card className="mt-6 bg-content1 hover:shadow-lg transition-shadow">
+        <CardBody className="p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              <span className="text-xl">Total:</span>
+              <span className="text-2xl font-bold">
+                ${total.toFixed(2)}
+              </span>
+            </div>
+            <Button
+              color="primary"
+              size="lg"
+              className="w-full sm:w-auto min-w-40"
+            >
+              Checkout
+            </Button>
           </div>
-          <Button 
-            color="primary"
-            size="lg"
-            className="w-full mt-4"
-          >
-            Checkout
-          </Button>
         </CardBody>
       </Card>
     </div>
   );
 }
-
