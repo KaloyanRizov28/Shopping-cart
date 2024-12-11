@@ -189,15 +189,17 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                     </div>
                   </div>
                   <Button
-                    size="md"
-                    color="danger"
-                    variant="flat"
-                    onClick={(e) => handleRemoveItem(item.id, e)}
-                    onTouchStart={(e) => handleRemoveItem(item.id, e)}
-                    className="w-full min-h-[44px]"
-                  >
-                    Remove
-                  </Button>
+  size="md"
+  color="danger"
+  variant="flat"
+  onClick={(e) => handleRemoveItem(item.id, e)}
+  onTouchStart={(e) => handleRemoveItem(item.id, e)}
+  className="w-full min-h-[44px]"
+  
+  disabled={Date.now() - (window.lastRemoveTime || 0) < 500}
+>
+  Remove
+</Button>
                 </div>
               </div>
             </CardBody>
