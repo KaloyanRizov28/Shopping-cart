@@ -31,22 +31,28 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
       e.preventDefault();
       e.stopPropagation();
     }
-
-    if (e.type === 'click' && isTouchEvent) {
-      isTouchEvent = false;
+  
+    
+    let lastRemoveTime = window.lastRemoveTime || 0;
+    const currentTime = Date.now();
+    
+    
+    if (currentTime - lastRemoveTime < 500) {
       return;
     }
-
+  
+    window.lastRemoveTime = currentTime;
+  
+    
     if (e.type === 'touchstart') {
-      isTouchEvent = true;
-    }
-
-    setTimeout(() => {
+      setTimeout(() => {
+        removeItem(id);
+      }, 200);
+    } else {
       removeItem(id);
-      isTouchEvent = false;
-    }, 50);
+    }
   };
-
+  
   const handleContinueShopping = (e) => {
     if (e) {
       e.preventDefault();
@@ -125,16 +131,18 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                   </div>
                 </div>
                 <div className="col-span-2 flex justify-end">
-                  <Button
-                    size="md"
-                    color="danger"
-                    variant="flat"
-                    onClick={(e) => handleRemoveItem(item.id, e)}
-                    onTouchStart={(e) => handleRemoveItem(item.id, e)}
-                    className="px-6 min-h-[44px]"
-                  >
-                    Remove
-                  </Button>
+                <Button
+  size="md"
+  color="danger"
+  variant="flat"
+  onClick={(e) => handleRemoveItem(item.id, e)}
+  onTouchStart={(e) => handleRemoveItem(item.id, e)}
+  className="w-full min-h-[44px]"
+  
+  disabled={Date.now() - (window.lastRemoveTime || 0) < 500}
+>
+  Remove
+</Button>
                 </div>
               </div>
 
