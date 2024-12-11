@@ -101,36 +101,48 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-center">
                     <div className="inline-flex items-center gap-3 bg-content2 rounded-lg px-4 py-2">
-                      <Button
-                        size="md"
-                        variant="light"
-                        isIconOnly
-                        onClick={() => updateQuantity(item.id, item.amount - 1)}
-                        className="text-lg font-bold"
-                      >
-                        −
-                      </Button>
-                      <span className="w-12 text-center text-lg font-medium">{item.amount}</span>
-                      <Button
-                        size="md"
-                        variant="light"
-                        isIconOnly
-                        onClick={() => updateQuantity(item.id, item.amount + 1)}
-                        className="text-lg font-bold"
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
-                  <Button
-                    size="md"
-                    color="danger"
-                    variant="flat"
-                    onClick={() => removeItem(item.id)}
-                    className="w-full"
-                  >
-                    Remove
-                  </Button>
+                    <Button
+          size="md"
+          variant="light"
+  isIconOnly
+  onClick={() => updateQuantity(item.id, item.amount - 1)}
+  onTouchStart={(e) => {
+    e.preventDefault();
+    updateQuantity(item.id, item.amount - 1);
+  }}
+  className="text-lg font-bold min-h-[44px] min-w-[44px]"
+>
+  −
+</Button>
+<span className="w-12 text-center text-lg font-medium">{item.amount}</span>
+<Button
+  size="md"
+  variant="light"
+  isIconOnly
+  onClick={() => updateQuantity(item.id, item.amount + 1)}
+  onTouchStart={(e) => {
+    e.preventDefault();
+    updateQuantity(item.id, item.amount + 1);
+  }}
+  className="text-lg font-bold min-h-[44px] min-w-[44px]"
+>
+  +
+</Button>
+</div>
+</div>
+<Button
+  size="md"
+  color="danger"
+  variant="flat"
+  onClick={() => removeItem(item.id)}
+  onTouchStart={(e) => {
+    e.preventDefault();
+    removeItem(item.id);
+  }}
+  className="w-full min-h-[44px]"
+>
+  Remove
+</Button>
                 </div>
               </div>
             </CardBody>

@@ -158,6 +158,7 @@ export default function Shop({ listOfItems, setListOfItems, handleBuyClick }) {
                 color="primary"
                 className="w-full"
                 onClick={() => handleBuyClick(product)}
+                onTouchStart={() => handleBuyClick(product)}
               >
                 Add to Cart
               </Button>
