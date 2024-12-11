@@ -154,24 +154,14 @@ export default function Shop({ listOfItems, setListOfItems, handleBuyClick }) {
               </p>
             </CardBody>
             <CardFooter className="p-4 pt-0">
-            <Button 
-  color="primary"
-  className="w-full"
-  onClick={(e) => {
-    // Check if it's a touch event to prevent double firing
-    if (e.type === 'click' && e.nativeEvent.pointerType === 'touch') {
-      return;
-    }
-    handleBuyClick(product);
-  }}
-  onTouchStart={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    handleBuyClick(product);
-  }}
->
-  Add to cart
-</Button>
+              <Button 
+                color="primary"
+                className="w-full"
+                onClick={() => handleBuyClick(product)}
+                onTouchStart={() => handleBuyClick(product)}
+              >
+                Add to Cart
+              </Button>
             </CardFooter>
           </Card>
         ))}
