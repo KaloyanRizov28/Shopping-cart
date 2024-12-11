@@ -1,21 +1,74 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardBody, Button } from '@nextui-org/react';
 
 export default function ShopCart({ boughtItems = [], updateQuantity, removeItem }) {
+  const navigate = useNavigate();
+  let isTouchEvent = false;
+
+  const handleQuantityChange = (id, newAmount, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (e.type === 'click' && isTouchEvent) {
+      isTouchEvent = false;
+      return;
+    }
+
+    if (e.type === 'touchstart') {
+      isTouchEvent = true;
+    }
+
+    setTimeout(() => {
+      updateQuantity(id, newAmount);
+      isTouchEvent = false;
+    }, 50);
+  };
+
+  const handleRemoveItem = (id, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (e.type === 'click' && isTouchEvent) {
+      isTouchEvent = false;
+      return;
+    }
+
+    if (e.type === 'touchstart') {
+      isTouchEvent = true;
+    }
+
+    setTimeout(() => {
+      removeItem(id);
+      isTouchEvent = false;
+    }, 50);
+  };
+
+  const handleContinueShopping = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    navigate('/shop');
+  };
+
   if (!Array.isArray(boughtItems) || boughtItems.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card className="bg-content1">
           <CardBody className="text-center py-8">
             <p className="text-xl mb-4">Your cart is empty</p>
-            <Link to="/shop">
-              <Button
-                color="primary"
-                className="mt-2"
-              >
-                Continue Shopping
-              </Button>
-            </Link>
+            <Button
+              color="primary"
+              className="mt-2 min-h-[44px]"
+              onClick={handleContinueShopping}
+              onTouchStart={handleContinueShopping}
+            >
+              Continue Shopping
+            </Button>
           </CardBody>
         </Card>
       </div>
@@ -52,8 +105,9 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                       size="md"
                       variant="light"
                       isIconOnly
-                      onClick={() => updateQuantity(item.id, item.amount - 1)}
-                      className="text-lg font-bold"
+                      onClick={(e) => handleQuantityChange(item.id, item.amount - 1, e)}
+                      onTouchStart={(e) => handleQuantityChange(item.id, item.amount - 1, e)}
+                      className="text-lg font-bold min-h-[44px] min-w-[44px]"
                     >
                       −
                     </Button>
@@ -62,8 +116,9 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                       size="md"
                       variant="light"
                       isIconOnly
-                      onClick={() => updateQuantity(item.id, item.amount + 1)}
-                      className="text-lg font-bold"
+                      onClick={(e) => handleQuantityChange(item.id, item.amount + 1, e)}
+                      onTouchStart={(e) => handleQuantityChange(item.id, item.amount + 1, e)}
+                      className="text-lg font-bold min-h-[44px] min-w-[44px]"
                     >
                       +
                     </Button>
@@ -74,8 +129,9 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                     size="md"
                     color="danger"
                     variant="flat"
-                    onClick={() => removeItem(item.id)}
-                    className="px-6"
+                    onClick={(e) => handleRemoveItem(item.id, e)}
+                    onTouchStart={(e) => handleRemoveItem(item.id, e)}
+                    className="px-6 min-h-[44px]"
                   >
                     Remove
                   </Button>
@@ -101,48 +157,39 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-center">
                     <div className="inline-flex items-center gap-3 bg-content2 rounded-lg px-4 py-2">
-                    <Button
-          size="md"
-          variant="light"
-  isIconOnly
-  onClick={() => updateQuantity(item.id, item.amount - 1)}
-  onTouchStart={(e) => {
-    e.preventDefault();
-    updateQuantity(item.id, item.amount - 1);
-  }}
-  className="text-lg font-bold min-h-[44px] min-w-[44px]"
->
-  −
-</Button>
-<span className="w-12 text-center text-lg font-medium">{item.amount}</span>
-<Button
-  size="md"
-  variant="light"
-  isIconOnly
-  onClick={() => updateQuantity(item.id, item.amount + 1)}
-  onTouchStart={(e) => {
-    e.preventDefault();
-    updateQuantity(item.id, item.amount + 1);
-  }}
-  className="text-lg font-bold min-h-[44px] min-w-[44px]"
->
-  +
-</Button>
-</div>
-</div>
-<Button
-  size="md"
-  color="danger"
-  variant="flat"
-  onClick={() => removeItem(item.id)}
-  onTouchStart={(e) => {
-    e.preventDefault();
-    removeItem(item.id);
-  }}
-  className="w-full min-h-[44px]"
->
-  Remove
-</Button>
+                      <Button
+                        size="md"
+                        variant="light"
+                        isIconOnly
+                        onClick={(e) => handleQuantityChange(item.id, item.amount - 1, e)}
+                        onTouchStart={(e) => handleQuantityChange(item.id, item.amount - 1, e)}
+                        className="text-lg font-bold min-h-[44px] min-w-[44px]"
+                      >
+                        −
+                      </Button>
+                      <span className="w-12 text-center text-lg font-medium">{item.amount}</span>
+                      <Button
+                        size="md"
+                        variant="light"
+                        isIconOnly
+                        onClick={(e) => handleQuantityChange(item.id, item.amount + 1, e)}
+                        onTouchStart={(e) => handleQuantityChange(item.id, item.amount + 1, e)}
+                        className="text-lg font-bold min-h-[44px] min-w-[44px]"
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+                  <Button
+                    size="md"
+                    color="danger"
+                    variant="flat"
+                    onClick={(e) => handleRemoveItem(item.id, e)}
+                    onTouchStart={(e) => handleRemoveItem(item.id, e)}
+                    className="w-full min-h-[44px]"
+                  >
+                    Remove
+                  </Button>
                 </div>
               </div>
             </CardBody>
@@ -162,7 +209,15 @@ export default function ShopCart({ boughtItems = [], updateQuantity, removeItem 
             <Button
               color="primary"
               size="lg"
-              className="w-full sm:w-auto min-w-40"
+              className="w-full sm:w-auto min-w-40 min-h-[44px]"
+              onClick={(e) => {
+                e.preventDefault();
+                
+              }}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                
+              }}
             >
               Checkout
             </Button>
