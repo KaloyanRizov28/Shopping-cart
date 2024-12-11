@@ -65,6 +65,7 @@ export default function Shop({ listOfItems, setListOfItems, handleBuyClick }) {
       </div>
     );
   }
+  
 
   return (
     <div>
